@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+  
+  <div>
+
+  </div>
+
+  <div>
+    <input
+      type="file"
+      class="form-control"
+      id="file"
+      placeholder="請輸入圖片連結"
+    />
+
+  </div>
+
+  <script>
+  const url = 'https://vue3-course-api.hexschool.io/v2'; // 請加入站點
+  const path = 'amos-hexschool'; // 請加入個人 API Path
+
+  const fileInput = document.querySelector('#file');
+
+  fileInput.addEventListener('change', upload);
+
+	// #3 取得 Token（Token 僅需要設定一次）
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    console.log(token);
+	//https://github.com/axios/axios 找author
+	axios.defaults.headers.common['Authorization'] = token;
+
+
+  function upload() {
+    // #1 撰寫上傳的 API 事件
+	console.dir(fileInput);
+	const file = fileInput.files[0];
+	console.log(file);
+	
+	const formData = new FormData();
+	formData.append('file-to-upload',file);
+	
+	axios.post(`${url}/api/${path}/admin/upload`,formData)
+		.then((res)=>{
+			console.log(res.data);
+		})
+		.catch((err)=>{
+		console.log(err.respone);
+	}) 
+	
+	//https://storage.googleapis.com/vue-course-api.appspot.com/amos-hexschool/1642090895766.jpg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=J1%2B5bJT9GCOug%2B1R6M1nW7bA5ZWe2%2BPojZNSXHgU82PdjOpRutwFSeMhOTlfHMWPxOdlFpDkcU1bablIeoK3yVP7j6u5KYaKAr4kXW96ujRUexuuuB4zrhh232cqRbUFSXIo8jCgu3I8gkTH1%2F%2FU8YvzISFeo33jARe8aKmmXFuGeAN94mLBfmC4uyndHlaRqVlZqdRwjnmVEocMBOKFufokFulJ9z%2BIlzwFeY0ydRK%2FMMgUwz3GYyIjRSv3oQvw7Nb8NKxDtIeS4V0e2%2F97aPiymyFeBgTTrvs6%2FRXUpNlPH4MxzObf5ytM5mzTvK2jUgTG6mwN9WG%2BOr60Vkl5WQ%3D%3D
+	
+	
+  }
+
+  </script>
+</body>
+</html>
